@@ -1,16 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,300&family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,300&display=swap');
 
+:root {
+  --primary-color: #FD951f;
+  --secondary-color: #1fd4fd;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 
   text-decoration: none;
-
   list-style-type: none;
 }
 
-html, body {
+html,body {
   min-height: 100vh;
 }
 
@@ -19,6 +23,8 @@ body {
 
   background-color: #f9f9f9;
 }
+
+/* HEADER */
 
 header, footer {
   background-color: black;
@@ -29,11 +35,36 @@ header, footer {
 
   text-align: center;
 }
-
 /* primeira div > */
 header div.container {
   display: grid;
-  grid-template-columns: 220ppx auto 280px;
+  grid-template-columns: 220px auto 280px;
   align-items: center;
-  grid-gap: 24px;
+  grid-gap:24px
+}
+
+header div.container a {
+  justify-self: start;
+}
+
+/* logo */
+.logo h1 {
+  color: white;
+  font-size: 36px;
+  line-height: 46px;
+}
+
+.logo h2 {
+  color: var(--primary-color);
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 2px;
+}
+
+/* HEADER SEARCH */
+.search input {
+  width: 100%;
+  padding: 8px 16px;
+  border-radius: 2px;
+  font-size: 16px;
 }
