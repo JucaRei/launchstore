@@ -31,9 +31,7 @@
 <div class="item">
   <div>Descrição</div>
   <div>
-    <textarea name="description">
-      {{ product.description }}
-    </textarea>
+    <textarea name="description">{{ product.description }}</textarea>
   </div>
 </div>
 
@@ -48,6 +46,7 @@
       placeholder="Preço do Produto." 
       value="{{ product.price }}"
       {# Faremos um máscara de dinheiro/reais #}
+      onkeydown="Mask.apply(this, 'formatBRL')"
     >
   </div>
   {% if product.old_price %}
@@ -68,7 +67,7 @@
 </div>
 
 {# Na primeiro produto não aparece #}
-{% if product.status %}
+{% if (product.status == '1') or (product.status == '0') %}
 <div class="item">
   <div>Disponível</div>
   <div>
