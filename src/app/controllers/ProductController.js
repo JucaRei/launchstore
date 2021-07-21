@@ -1,4 +1,4 @@
-const { formatPrice } = require("../../lib/utils")
+const { formatPrice } = require("../../lib/utils");
 
 const Category = require("../models/Category");
 const Product = require("../models/Product");
@@ -27,6 +27,11 @@ module.exports = {
       }
     }
 
+    // imagens
+    if (req.files.length == 0) {
+      return res.send("Please, send at least one image.");
+    }
+
     let results = await Product.create(req.body);
     const productId = results.rows[0].id;
 
@@ -38,8 +43,8 @@ module.exports = {
 
     if (!product) return res.send("Product not found.");
 
-    product.old_price = formatPrice(product.old_price)
-    product.price = formatPrice(product.price)
+    product.old_price = formatPrice(product.old_price);
+    product.price = formatPrice(product.price);
 
     results = await Category.all();
     const categories = results.rows;
@@ -57,22 +62,22 @@ module.exports = {
     }
 
     // tirar a formatação e mandar o número limpo
-    req.body.price = req.body.price.replace(/\D/g, "")
+    req.body.price = req.body.price.replace(/\D/g, "");
 
     // Manter preço antigo
-    if(req.body.old_price != req.body.price) {
-      const oldProduct = await Product.find(req.body.id)
+    if (req.body.old_price != req.body.price) {
+      const oldProduct = await Product.find(req.body.id);
 
-      req.body.old_price = oldProduct.rows[0].price
+      req.body.old_price = oldProduct.rows[0].price;
     }
 
-    await Product.update(req.body)
+    await Product.update(req.body);
 
-    return res.redirect(`/products/${req.body.id}/edit`)
+    return res.redirect(`/products/${req.body.id}/edit`);
   },
   async delete(req, res) {
-    await Product.delete(req.body.id)
+    await Product.delete(req.body.id);
 
-    return res.redirect("/products/create")
-  }
+    return res.redirect("/products/create");
+  },
 };
