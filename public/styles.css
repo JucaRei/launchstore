@@ -3,6 +3,7 @@
 :root {
   --primary-color: #fd951f;
   --secondary-color: #442fb9;
+  --photo-color: #2776fa;
 }
 
 * {
@@ -244,4 +245,44 @@ form .item span {
 
 form .fields {
   margin-bottom: 64px;
+}
+
+/* PHOTOS UPLOUD */
+form .item #photos-upload {
+  position: relative;
+
+  display: block;
+  /* para não ter rolagem */
+  overflow: hidden;
+
+  width: 200px;
+}
+
+form .item #photos-upload p {
+  padding: 8px 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px -6px #333;
+  background-color: var(--photo-color);
+  color: white;
+
+  width: 100%;
+  text-align: center;
+  /* cursor: pointer; */
+
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+form .item #photos-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+
+  cursor: pointer;
 }

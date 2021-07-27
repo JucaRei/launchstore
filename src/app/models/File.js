@@ -1,35 +1,20 @@
 const db = require("../../config/db");
 
 module.exports = {
-  create(data) {
+  create({ filename, path, product_id}) {
     const query = `
       INSERT INTO files (
         name,
         path,
-        product_id,
-        description,
-        old_price,
-        price,
-        quantity,
-        status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        product_id
+      ) VALUES ($1, $2, $3)
       RETURNING id
     `;
-    // $ placeholder
-
-    // R$ 1,23
-    // 123
-    data.price = data.price.replace(/\D/g, "");
 
     const values = [
-      data.category_id,
-      data.user_id || 1,
-      data.name,
-      data.description,
-      data.old_price || data.price,
-      data.price,
-      data.quantity,
-      data.status || 1,
+      filename,
+      path,
+      product_id
     ];
 
     return db.query(query, values);
