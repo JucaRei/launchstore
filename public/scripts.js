@@ -20,16 +20,22 @@ const Mask = {
 };
 
 const PhotosUpload = {
-  uploudLimit: 6,
+  input: "",
   preview: document.querySelector("#photos-preview"),
+  uploudLimit: 6,
+  files: [],
   handleFileInput(event) {
     const { files: fileList } = event.target;
+    PhotosUpload.input = event.target
 
     if (PhotosUpload.hasLimit(event)) return;
 
     // aplicar as funcionalidades de array no FileList
     Array.from(fileList).forEach((file) => {
-      const reader = new FileReader();
+
+      PhotosUpload.files.push(file);
+
+      const reader = new FileReader(); //ler arquivos
 
       reader.onload = () => {
         const image = new Image(); // <img />
@@ -42,10 +48,13 @@ const PhotosUpload = {
 
       reader.readAsDataURL(file);
     });
+
+    PhotosUpload.input.files = PhotosUpload.getAllFiles()
+
   },
   hasLimit(event) {
-    const { uploudLimit } = PhotosUpload;
-    const { files: fileList } = event.target;
+    const { uploudLimit, input: fileList } = PhotosUpload;
+    // const { files: fileList } = event.target;
 
     if (fileList.length > uploudLimit) {
       alert(`Envie no máximo ${uploudLimit} fotos`);
@@ -54,6 +63,14 @@ const PhotosUpload = {
     }
 
     return false;
+  },
+  getAllFiles() {
+    // Antigamente o firefox não tinha o DataTransfer (new ClipboardEvent("").clipboardData || )
+    const dataTranfer = new DataTransfer()
+
+    PhotosUpload.files.forEach(file => dataTranfer.items.add(file))
+
+    return dataTranfer.files
   },
   getContainer(image) {
     const div = document.createElement("div");
@@ -70,13 +87,16 @@ const PhotosUpload = {
   getRemoveButton() {
     const button = document.createElement("i");
     button.classList.add("material-icons");
-    button.innerHTML = "close";
+    button.innerHTML = "delete_forever";
     return button;
   },
   removePhoto() {
-    const photoDiv = event.target.parentNode;
+    const photoDiv = event.target.parentNode; // <div class="photo">
     const photosArray = Array.from(PhotosUpload.preview.children);
     const index = photosArray.indexOf(photoDiv);
+
+    PhotosUpload.files.splice(index, 1)
+    PhotosUpload.input.files = PhotosUpload.getAllFiles()
 
     photoDiv.remove();
   },
