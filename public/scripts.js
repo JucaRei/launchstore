@@ -78,14 +78,6 @@ const PhotosUpload = {
 
     return false;
   },
-  getAllFiles() {
-    // Antigamente o firefox não tinha o DataTransfer (new ClipboardEvent("").clipboardData || )
-    const dataTranfer = new DataTransfer()
-
-    PhotosUpload.files.forEach(file => dataTranfer.items.add(file))
-
-    return dataTranfer.files
-  },
   getContainer(image) {
     const div = document.createElement("div");
     div.classList.add("photo");
@@ -97,6 +89,14 @@ const PhotosUpload = {
     div.appendChild(PhotosUpload.getRemoveButton());
 
     return div;
+  },
+  getAllFiles() {
+    // Antigamente o firefox não tinha o DataTransfer (new ClipboardEvent("").clipboardData || )
+    const dataTranfer = new DataTransfer()
+
+    PhotosUpload.files.forEach(file => dataTranfer.items.add(file))
+
+    return dataTranfer.files
   },
   getRemoveButton() {
     const button = document.createElement("i");
@@ -115,3 +115,4 @@ const PhotosUpload = {
     photoDiv.remove();
   },
 };
+

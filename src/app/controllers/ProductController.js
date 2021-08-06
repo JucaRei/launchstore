@@ -2,7 +2,7 @@ const { formatPrice } = require("../../lib/utils");
 
 const Category = require("../models/Category");
 const Product = require("../models/Product");
-const File = require("../models/File")
+const File = require("../models/File");
 
 module.exports = {
   create(req, res) {
@@ -28,7 +28,7 @@ module.exports = {
       }
     }
 
-    // imagens
+    // verifica se tem imagens
     if (req.files.length == 0) {
       return res.send("Please, send at least one image.");
     }
@@ -36,10 +36,14 @@ module.exports = {
     let results = await Product.create(req.body);
     const productId = results.rows[0].id;
 
-    const filesPromise = req.files.map(file => File.create({...file, product_id: productId}))
-    await Promise.all(filesPromise)
+    const filesPromise = req.files.map((file) =>
+      File.create({ ...file, product_id: productId })
+    );
 
-    return res.redirect(`/products/${productId}`);
+    // espera todas as promessas serem executadas
+    await Promise.all(filesPromise);
+
+    return res.redirect(`/products/${productId}/edit`);
   },
   async edit(req, res) {
     let results = await Product.find(req.params.id);
@@ -50,10 +54,21 @@ module.exports = {
     product.old_price = formatPrice(product.old_price);
     product.price = formatPrice(product.price);
 
+    // get Categories
     results = await Category.all();
     const categories = results.rows;
 
-    return res.render("products/edit.njk", { product, categories });
+    // get Images
+    results = await Product.files(product.id)
+    let files = results.rows
+    // Pegar o endereço completo da imagem
+    files = files.map(file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+    }))
+
+
+    return res.render("products/edit.njk", { product, categories, files })
   },
   async put(req, res) {
     // Verifica se tudo está preenchido
