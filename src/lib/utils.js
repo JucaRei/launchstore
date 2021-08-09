@@ -8,10 +8,16 @@ module.exports = {
 
     const day = `0${date.getUTCDate()}`.slice(-2);
 
+    const hour = date.getHours();
+
+    const minutes = date.getMinutes();
+
     return {
       day,
       month,
       year,
+      hour,
+      minutes,
       iso: `${year}-${month}-${day}`,
       birthDay: `${day}/${month}`,
       format: `${day}-${month}-${year}`,
@@ -22,5 +28,5 @@ module.exports = {
       style: "currency", // 1.000,00
       currency: "BRL", // R$
     }).format(price / 100);
-  }
+  },
 };

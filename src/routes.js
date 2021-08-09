@@ -8,6 +8,7 @@ routes.get("/", function (req, res) {
 });
 
 routes.get("/products/create", ProductController.create);
+routes.get("/products/:id", ProductController.show)
 routes.get("/products/:id/edit", ProductController.edit);
 
 // recebendo do campo input photos
