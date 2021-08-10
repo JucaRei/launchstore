@@ -128,3 +128,17 @@ const PhotosUpload = {
   },
 };
 
+const ImageGallery = {
+  highlight: document.querySelector(".gallery .highlight > img"),
+  previews: document.querySelectorAll(".gallery-preview img"),
+  setImage(e) {
+    const { target } = e
+
+    // Tirar quando não estiver selecionado
+    ImageGallery.previews.forEach(preview => preview.classList.remove("active"))
+    target.classList.add("active")
+
+    // Trocando a imagem
+    ImageGallery.highlight.src = target.src
+  }
+}
