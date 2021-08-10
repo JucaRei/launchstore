@@ -1,10 +1,27 @@
 {% extends "layout.njk" %}
 {% block content %}
   <section class="product-single container">
-    <div
-      class="gallery">
+    <div class="gallery">
+      <div class="highlight">
       {# (placehold.it) coloca uma imagem de qualquer coisa #}
-      <img src="http://placehold.it/500x500?text=PRODUTO SEM FOTO"/>
+      {% if not files[0] %}
+        <img src="http://placehold.it/500x500?text=PRODUTO SEM FOTO"/>
+      {% else %}
+        <img src="{{files[0].src}}" alt="{{files[0].name}}">
+      {% endif %}
+      </div>
+      <div class="gallery-preview">
+        {% for image in files %}
+          <img
+            src="{{image.src}}"
+            alt="{{image.name}}"
+            {# imagem ativa ou não | index pega do 0 ao ultimo #}
+            {% if loop.index0 == 0 %}
+              class="active"
+            {% endif %}
+          >
+        {% endfor %}
+      </div>
     </div>
     <div class="info">
       <h1>{{ product.name }}</h1>
