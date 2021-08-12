@@ -26,13 +26,12 @@ const PhotosUpload = {
   files: [],
   handleFileInput(event) {
     const { files: fileList } = event.target;
-    PhotosUpload.input = event.target
+    PhotosUpload.input = event.target;
 
     if (PhotosUpload.hasLimit(event)) return;
 
     // aplicar as funcionalidades de array no FileList
     Array.from(fileList).forEach((file) => {
-
       PhotosUpload.files.push(file);
 
       const reader = new FileReader(); //ler arquivos
@@ -49,12 +48,11 @@ const PhotosUpload = {
       reader.readAsDataURL(file);
     });
 
-    PhotosUpload.input.files = PhotosUpload.getAllFiles()
-
+    PhotosUpload.input.files = PhotosUpload.getAllFiles();
   },
   hasLimit(event) {
     const { uploudLimit, input, preview } = PhotosUpload;
-    const { files: fileList } = input
+    const { files: fileList } = input;
 
     if (fileList.length > uploudLimit) {
       alert(`Envie no máximo ${uploudLimit} fotos`);
@@ -62,18 +60,18 @@ const PhotosUpload = {
       return true;
     }
 
-    const photosDiv = []
-    preview.childNodes.forEach(item => {
+    const photosDiv = [];
+    preview.childNodes.forEach((item) => {
       if (item.classList && item.classList == "photo") {
-        photosDiv.push(item)
+        photosDiv.push(item);
       }
-    })
+    });
 
-    const totalPhotos = fileList.length + photosDiv.length
-    if(totalPhotos > uploudLimit) {
-      alert("Você atingiu o limite máximo de fotos")
-      event.preventDefault()
-      return true
+    const totalPhotos = fileList.length + photosDiv.length;
+    if (totalPhotos > uploudLimit) {
+      alert("Você atingiu o limite máximo de fotos");
+      event.preventDefault();
+      return true;
     }
 
     return false;
@@ -92,11 +90,11 @@ const PhotosUpload = {
   },
   getAllFiles() {
     // Antigamente o firefox não tinha o DataTransfer (new ClipboardEvent("").clipboardData || )
-    const dataTranfer = new DataTransfer()
+    const dataTranfer = new DataTransfer();
 
-    PhotosUpload.files.forEach(file => dataTranfer.items.add(file))
+    PhotosUpload.files.forEach((file) => dataTranfer.items.add(file));
 
-    return dataTranfer.files
+    return dataTranfer.files;
   },
   getRemoveButton() {
     const button = document.createElement("i");
@@ -109,22 +107,24 @@ const PhotosUpload = {
     const photosArray = Array.from(PhotosUpload.preview.children);
     const index = photosArray.indexOf(photoDiv);
 
-    PhotosUpload.files.splice(index, 1)
-    PhotosUpload.input.files = PhotosUpload.getAllFiles()
+    PhotosUpload.files.splice(index, 1);
+    PhotosUpload.input.files = PhotosUpload.getAllFiles();
 
     photoDiv.remove();
   },
-  removeOldPhoto(event){
-    const photoDiv = event.target.parentNode
+  removeOldPhoto(event) {
+    const photoDiv = event.target.parentNode;
 
-    if(photoDiv.id) {
-      const removedFiles = document.querySelector("input[name='removed_files']")
+    if (photoDiv.id) {
+      const removedFiles = document.querySelector(
+        "input[name='removed_files']"
+      );
       if (removedFiles) {
-        removedFiles.value += `${photoDiv.id},`  // 1,2,3
+        removedFiles.value += `${photoDiv.id},`; // 1,2,3
       }
     }
 
-    photoDiv.remove()
+    photoDiv.remove();
   },
 };
 
@@ -132,13 +132,34 @@ const ImageGallery = {
   highlight: document.querySelector(".gallery .highlight > img"),
   previews: document.querySelectorAll(".gallery-preview img"),
   setImage(e) {
-    const { target } = e
+    const { target } = e;
 
     // Tirar quando não estiver selecionado
-    ImageGallery.previews.forEach(preview => preview.classList.remove("active"))
-    target.classList.add("active")
+    ImageGallery.previews.forEach((preview) =>
+      preview.classList.remove("active")
+    );
+    target.classList.add("active");
 
     // Trocando a imagem
-    ImageGallery.highlight.src = target.src
-  }
-}
+    ImageGallery.highlight.src = target.src;
+    Lightbox.image.src = target.src;
+  },
+};
+
+const Lightbox = {
+  target: document.querySelector(".lightbox-target"),
+  image: document.querySelector(".lightbox-target img"),
+  closeButton: document.querySelector(".lightbox-target a.lightbox-close"),
+  open() {
+    Lightbox.target.style.opacity = 1;
+    Lightbox.target.style.top = 0;
+    Lightbox.target.style.bottom = 0;
+    Lightbox.closeButton.style.top = 0;
+  },
+  close() {
+    Lightbox.target.style.opacity = 0;
+    Lightbox.target.style.top = "-100%";
+    Lightbox.target.style.bottom = "initial";
+    Lightbox.closeButton.style.top = "-80px";
+  },
+};
