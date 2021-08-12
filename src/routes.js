@@ -1,14 +1,14 @@
 const express = require("express");
 const routes = express.Router();
 const multer = require("./app/middlewares/multer");
-const ProductController = require("./app/controllers/ProductController");
 
-routes.get("/", function (req, res) {
-  return res.render("layout.njk");
-});
+const ProductController = require("./app/controllers/ProductController");
+const HomeController = require("./app/controllers/HomeController");
+
+routes.get("/", HomeController.index);
 
 routes.get("/products/create", ProductController.create);
-routes.get("/products/:id", ProductController.show)
+routes.get("/products/:id", ProductController.show);
 routes.get("/products/:id/edit", ProductController.edit);
 
 // recebendo do campo input photos
