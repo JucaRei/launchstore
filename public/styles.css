@@ -532,6 +532,7 @@ form .item #photos-preview img {
 
 .shop .product {
   display: grid;
+  padding: 6px;
 }
 
 .shop .product .image {
